@@ -1,0 +1,33 @@
+<div class="container mt-4">
+    <h2>Patient List</h2>
+  
+    <!-- Search Box -->
+    <input
+      type="text"
+      class="form-control mb-3"
+      placeholder="Search patient by name..."
+      [(ngModel)]="searchText"
+      (input)="filterPatients()"
+    />
+  
+    <!-- Patient Table -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Gender</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of filteredPatients">
+          <td>{{ patient.id }}</td>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.age }}</td>
+          <td>{{ patient.gender }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
