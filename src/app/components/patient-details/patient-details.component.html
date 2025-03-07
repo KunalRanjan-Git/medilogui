@@ -1,0 +1,84 @@
+<div class="container mt-4">
+  <h3 class="text-center mb-4">Patient Details</h3>
+
+  <div *ngIf="patient" class="row">
+    <!-- Left Column -->
+    <div class="col-md-6">
+      <div class="card p-3 shadow-sm">
+        <h5 class="card-title">{{ patient.name }}</h5>
+        <p><strong>Gender:</strong> {{ patient.gender }}</p>
+        <p><strong>Age:</strong> {{ patient.age }}</p>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-md-6">
+      <div class="card p-3 shadow-sm">
+        <p><strong>Mobile:</strong> {{ patient.contactNumber }}</p>
+        <p><strong>Address:</strong> {{ patient.address }}</p>
+        <p><strong>DOB:</strong> {{ patient.dateOfBirth | date:'dd-MMM-yyyy' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prescribed Medicines Section -->
+  <h3 class="mt-4">Prescribed Medicines</h3>
+  <button class="btn btn-primary mb-3" (click)="openMedicineModal()">Add Medicine</button>
+
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Medicine Name</th>
+        <th>Dosage</th>
+        <th>Prescribed Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let medicine of medicines">
+        <td>{{ medicine.medicineName }}</td>
+        <td>{{ medicine.dosage }}</td>
+        <td>{{ medicine.prescribedDate | date:'dd-MMM-yyyy' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add Medicine Modal -->
+  <div *ngIf="showMedicineModal" class="modal fade show d-block">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Medicine</h5>
+          <button type="button" class="btn-close" (click)="closeMedicineModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form #medicineForm="ngForm" (ngSubmit)="saveMedicine()">
+            <!-- Medicine Name -->
+            <div class="mb-3">
+              <label class="form-label">Medicine Name *</label>
+              <input type="text" class="form-control" [(ngModel)]="newMedicine.medicineName" name="medicineName" required>
+            </div>
+
+            <!-- Dosage -->
+            <div class="mb-3">
+              <label class="form-label">Dosage</label>
+              <input type="text" class="form-control" [(ngModel)]="newMedicine.dosage" name="dosage">
+            </div>
+
+            <!-- Prescribed Date -->
+            <div class="mb-3">
+              <label class="form-label">Prescribed Date *</label>
+              <input type="date" class="form-control" [(ngModel)]="newMedicine.prescribedDate" name="prescribedDate" required>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success" [disabled]="!medicineForm.valid">Save</button>
+              <button type="button" class="btn btn-secondary" (click)="closeMedicineModal()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

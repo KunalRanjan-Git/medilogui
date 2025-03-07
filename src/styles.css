@@ -1,31 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 @import  url('bootstrap/dist/css/bootstrap.min.css');
 
+/* Ensure body takes full height */
 html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centers content vertically */
-    align-items: center; /* Centers content horizontally */
-  }
-  
-  .container {
-    flex: 1;
-  }
-  
-  footer {
-    position: relative;
-    width: 100%;
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    text-align: center;
-    padding: 10px;
-  }
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the app component take full height */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content should expand and push footer down */
+main {
+  flex: 1;
+}
+
+/* Footer should stay at the bottom */
+footer {
+  background-color: #343a40; /* Dark background */
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  position: relative;
+}
+
   

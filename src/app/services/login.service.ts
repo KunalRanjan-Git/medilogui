@@ -16,8 +16,10 @@ export class LoginService {
       passwordHash: data.password,});
   }
 
-  register(data: { fullName: string; email: string; password: string }): Observable<any> {
+  register(data: { name: string; role:string; email: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/Login/register`, {Role: "User",
+      name: data.name,
+      role: data.role,
       email: data.email,
       passwordHash: data.password,});
   }

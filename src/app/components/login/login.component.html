@@ -1,0 +1,90 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-body">
+          <!-- Navigation Tabs -->
+          <ul class="nav nav-pills nav-justified mb-3">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{ active: activeTab === 'login' }" (click)="activeTab = 'login'">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{ active: activeTab === 'register' }" (click)="activeTab = 'register'">
+                <i class="bi bi-person-plus"></i> Register
+              </a>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- Login Form -->
+            <div *ngIf="activeTab === 'login'">
+              <h4 class="text-center">Login</h4>
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" id="loginEmail" class="form-control" [(ngModel)]="loginData.email" placeholder="Enter your email" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="loginPassword" class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" id="loginPassword" class="form-control" [(ngModel)]="loginData.password" placeholder="Enter your password" required />
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100" (click)="onLogin()">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+              </button>
+            </div>
+
+            <!-- Register Form -->
+            <div *ngIf="activeTab === 'register'">
+              <h4 class="text-center">Register</h4>
+
+              <div class="mb-3">
+                <label for="registerName" class="form-label">Name</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" id="registerName" class="form-control" [(ngModel)]="registerData.name" placeholder="Enter your name" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="registerEmail" class="form-label">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" id="registerEmail" class="form-control" [(ngModel)]="registerData.email" placeholder="Enter your email" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="registerPassword" class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" id="registerPassword" class="form-control" [(ngModel)]="registerData.password" placeholder="Enter your password" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="registerRole" class="form-label">Role</label>
+                <select id="registerRole" class="form-select" [(ngModel)]="registerData.role">
+                  <option value="User" selected>User</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+
+              <button class="btn btn-success w-100" (click)="onRegister()">
+                <i class="bi bi-person-plus"></i> Register
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

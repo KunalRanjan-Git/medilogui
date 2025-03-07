@@ -10,12 +10,21 @@ export class PatientService {
 
   constructor(private http: HttpClient) {}
 
+  addPatient(patient: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/Patients`, patient);
+  }
+
   getPatients(name: string = ''): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/patients?name=${name}`);
   }
 
   getPatientById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/patients/${id}`);
+  }
+
+  // ✅ Add Medicine
+  addMedicine(medicine: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/MedicineRecords`, medicine);
   }
 
   getMedicineRecords(patientId: number): Observable<any[]> {
