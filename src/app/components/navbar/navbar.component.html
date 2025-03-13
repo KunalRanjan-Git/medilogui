@@ -10,8 +10,9 @@
   
       <!-- Right: Links -->
       <div>
-        <a class="nav-link text-white d-inline mx-2" routerLink="/dashboard">Dashboard</a>
-        <a class="nav-link text-white d-inline mx-2" routerLink="/login">Logout</a>
+        <!-- <a class="nav-link text-white d-inline mx-2" routerLink="/dashboard">Dashboard</a> -->
+        <a *ngIf="authService.isLoggedIn()" class="nav-link text-white d-inline mx-2" (click)="logout()"><i class="bi bi-lock"></i> Logout</a>
+        <!-- <button *ngIf="authService.isLoggedIn()" class="btn btn-outline-light" (click)="logout()">Logout</button> -->
       </div>
     </div>
   </nav>

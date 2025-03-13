@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
 
   // ✅ Navigate to Patient Details
   viewPatientDetails(patientId: number) {
-    this.router.navigate(['/patientdetails', patientId]);
+    this.router.navigate(['/patient', patientId]);
   }
 
   // ✅ Open Modal

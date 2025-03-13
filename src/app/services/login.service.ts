@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-  private apiUrl = 'https://localhost:7278/api'; // Base URL of your .NET API
+  private apiUrl = 'http://localhost:5000/api'; // Base URL of your .NET API
 
   constructor(private http: HttpClient) {}
 
