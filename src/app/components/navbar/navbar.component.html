@@ -1,19 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container d-flex justify-content-between">
-      <!-- Left: Brand -->
-      <a class="navbar-brand" routerLink="/dashboard">MediLoX</a>
-  
-      <!-- Middle: Live Clock -->
-      <div class="text-white fw-bold">
-        <span>{{ currentTime }}</span> <!-- ✅ Display Live Time -->
-      </div>
-  
-      <!-- Right: Links -->
-      <div>
-        <!-- <a class="nav-link text-white d-inline mx-2" routerLink="/dashboard">Dashboard</a> -->
-        <a *ngIf="authService.isLoggedIn()" class="nav-link text-white d-inline mx-2" (click)="logout()"><i class="bi bi-lock"></i> Logout</a>
-        <!-- <button *ngIf="authService.isLoggedIn()" class="btn btn-outline-light" (click)="logout()">Logout</button> -->
-      </div>
+<nav class="navbar navbar-expand-lg glassmorphism-navbar shadow-sm">
+  <div class="container d-flex justify-content-between align-items-center">
+    
+    <!-- ✅ Left: Brand Logo -->
+    <a class="navbar-brand brand-logo">
+      <i class="bi bi-heart-pulse text-danger"></i> MediLoX
+    </a>
+
+    <!-- ✅ Middle: Clinic Name with Link -->
+    <a class="navbar-brand clinic-name" routerLink="/dashboard">
+      Kalyan Homoeo Clinic
+    </a>
+
+    <!-- ✅ Right: Live Clock & Logout -->
+    <div class="d-flex align-items-center">
+      <span class="live-clock">
+        <i class="bi bi-clock"></i> {{ currentTime }}
+      </span>
+      <button *ngIf="authService.isLoggedIn()" class="logout-btn" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </button>
     </div>
-  </nav>
-  
+
+  </div>
+</nav>

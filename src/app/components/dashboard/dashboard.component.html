@@ -1,31 +1,33 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Patient List</h2>
-    <button class="btn btn-primary" (click)="openModal()">
+  <!-- 🔵 Header with Stylish Buttons -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title">📋 Patient Records</h2>
+    <button class="btn btn-success add-btn" (click)="openModal()">
       <i class="bi bi-plus-lg"></i> Add Patient
     </button>
   </div>
 
-  <!-- Search Box -->
-  <div class="mb-3">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Search Patient"
+  <!-- 🔍 Search Box -->
+  <div class="search-container">
+    <input 
+      type="text" 
+      class="search-box" 
+      placeholder="Search Patients..." 
       [(ngModel)]="searchText"
-      (input)="filterPatients()"
+      (keyup.enter)="filterPatients()"
     />
+    <i class="bi bi-search search-icon"></i>
   </div>
 
-  <!-- Patient Table -->
-  <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-    <table class="table table-striped table-hover">
+  <!-- 🏥 Patient Table -->
+  <div class="table-responsive glassmorphism-table">
+    <table class="table table-hover">
       <thead class="table-dark">
         <tr>
           <th>Name</th>
-          <th>Mobile</th>
+          <th>Page No</th>
           <th>Address</th>
-          <th>Actions</th>
+          <th class="text-end">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -33,9 +35,12 @@
           <td>{{ patient.name }}</td>
           <td>{{ patient.contactNumber }}</td>
           <td>{{ patient.address }}</td>
-          <td>
-            <button class="btn btn-info btn-sm" (click)="viewPatientDetails(patient.id)">
+          <td class="text-end">
+            <button class="btn btn-info btn-sm action-btn" (click)="viewPatientDetails(patient.id)">
               <i class="bi bi-eye"></i> View
+            </button>
+            <button class="btn btn-danger btn-sm action-btn" (click)="deletePatient(patient.id)">
+              <i class="bi bi-trash"></i> Delete
             </button>
           </td>
         </tr>
@@ -44,48 +49,37 @@
   </div>
 </div>
 
-<!-- Add Patient Modal -->
+<!-- 📌 Add Patient Modal -->
 <div *ngIf="showModal" class="modal fade show d-block" tabindex="-1">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
+    <div class="modal-content glassmorphism-modal">
+      <div class="modal-header bg-success modal-header-custom">
         <h3 class="modal-title">Add New Patient</h3>
         <button type="button" class="btn-close" (click)="closeModal()"></button>
       </div>
 
       <div class="modal-body">
         <form #patientForm="ngForm" (ngSubmit)="savePatient()">
-          <!-- Name -->
           <div class="mb-3">
-            <label class="form-label text-danger">Name *</label>
+            <label class="form-label">Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control" [(ngModel)]="newPatient.name" name="name" required>
           </div>
 
-          <!-- Date of Birth -->
           <div class="mb-3">
-            <label class="form-label text-danger">Date of Birth *</label>
+            <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
             <input type="date" class="form-control" [(ngModel)]="newPatient.dateOfBirth" name="dateOfBirth" required (change)="calculateAge()">
           </div>
 
-          <!-- Age (Auto-Calculated) -->
           <div class="mb-3">
-            <label class="form-label">Age</label>
-            <input type="text" class="form-control" [(ngModel)]="newPatient.age" name="age" readonly>
-          </div>
-
-          <!-- Contact Number -->
-          <div class="mb-3">
-            <label class="form-label text-danger">Contact Number *</label>
+            <label class="form-label">Page Number <span class="text-danger">*</span></label>
             <input type="text" class="form-control" [(ngModel)]="newPatient.contactNumber" name="contactNumber" required>
           </div>
 
-          <!-- Address -->
           <div class="mb-3">
             <label class="form-label">Address</label>
             <input type="text" class="form-control" [(ngModel)]="newPatient.address" name="address">
           </div>
 
-          <!-- Gender -->
           <div class="mb-3">
             <label class="form-label">Gender</label>
             <select class="form-control" [(ngModel)]="newPatient.gender" name="gender">
@@ -96,12 +90,11 @@
             </select>
           </div>
 
-          <!-- Modal Footer -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-success" [disabled]="!patientForm.valid">
+            <button type="submit" class="btn btn-success btn-lg" [disabled]="!patientForm.valid">
               <i class="bi bi-save"></i> Save
             </button>
-            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-secondary btn-lg" (click)="closeModal()">Cancel</button>
           </div>
         </form>
       </div>

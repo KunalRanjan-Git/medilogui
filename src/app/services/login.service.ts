@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:5000/api'; // Base URL of your .NET API
+  private apiUrl = environment.apiUrl; // ✅ Use centralized API URL
+  //private apiUrl = 'https://localhost:5001/api'; // Base URL of your .NET API
+  //private apiUrl = 'http://localhost:5000/api'; // Base API URL Prod
 
   constructor(private http: HttpClient) {}
 

@@ -21,14 +21,6 @@ main {
   flex: 1;
 }
 
-/* Footer should stay at the bottom */
-footer {
-  background-color: #343a40; /* Dark background */
-  color: white;
-  text-align: center;
-  padding: 10px 0;
-  width: 100%;
-  position: relative;
-}
+
 
   

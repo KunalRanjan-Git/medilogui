@@ -1,0 +1,115 @@
+/* ✅ Page Title */
+.page-title {
+    font-weight: bold;
+    font-size: 28px;
+    color: #333;
+  }
+  
+  /* ✅ Modern Search Box */
+  .search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  .search-box {
+    width: 100%;
+    padding: 15px 50px 15px 20px;
+    font-size: 18px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  .search-box:focus {
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .search-box:focus + .search-icon {
+    color: #007bff;
+  }
+  
+  /* ✅ Add Patient Button */
+  .add-btn {
+    font-size: 16px;
+    border-radius: 25px;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .add-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  /* ✅ Glassmorphism Table */
+  .glassmorphism-table {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+  
+  table thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    cursor: pointer;
+  }
+  
+  /* ✅ Actions Column */
+  .action-btn {
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .action-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  /* ✅ Modern Modal with Glassmorphism */
+  .glassmorphism-modal {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header-custom {
+    background: #007bff;
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .modal-footer button {
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .modal-footer button:hover {
+    transform: scale(1.05);
+  }
+  

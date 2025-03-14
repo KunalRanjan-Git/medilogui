@@ -1,0 +1,116 @@
+/* ✅ Glassmorphism effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .glass-card:hover {
+    transform: scale(1.02);
+  }
+  
+  /* ✅ Rounded Buttons */
+  .rounded-btn {
+    border-radius: 25px;
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .rounded-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  /* ✅ Glassmorphism Table */
+  .glass-table {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  /* ✅ Glassmorphism Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-container {
+    width: 400px;
+    max-width: 90%;
+  }
+  
+  .glass-modal {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .glass-modal:hover {
+    transform: scale(1.02);
+  }
+
+  /* ✅ Glassmorphism Table */
+  .glassmorphism-table {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+  
+  
+  
+  
+  /* ✅ Modern Modal with Glassmorphism */
+  .glassmorphism-modal {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header-custom {
+    background: #007bff;
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .modal-footer button {
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .modal-footer button:hover {
+    transform: scale(1.05);
+  }
+  
+  /* ✅ Fully Responsive */
+  @media (max-width: 768px) {
+    .glass-card {
+      padding: 15px;
+    }
+  
+    .modal-container {
+      width: 90%;
+    }
+  }
+  

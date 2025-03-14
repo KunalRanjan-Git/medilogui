@@ -97,4 +97,18 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+  // ✅ Delete Medicine
+  deletePatient(patientId: number) {
+    if (confirm('Are you sure you want to delete this patient?')) {
+      this.patientService.deletePatient(patientId).subscribe(() => {
+        // ✅ Remove the deleted patient from the table
+        this.patients = this.patients.filter(m => m.id !== patientId);
+        alert('Patient deleted successfully!');
+        this.loadPatients();
+      }, error => {
+        console.error('Error deleting patient:', error);
+      });
+    }
+  }
 }

@@ -1,129 +1,100 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-lg border-0">
-        <div class="card-body">
-          <!-- Navigation Tabs -->
-          <ul class="nav nav-pills nav-justified mb-3">
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ active: activeTab === 'login' }" (click)="activeTab = 'login'">
-                <i class="bi bi-box-arrow-in-right"></i> Login
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ active: activeTab === 'register' }" (click)="activeTab = 'register'">
-                <i class="bi bi-person-plus"></i> Register
-              </a>
-            </li>
-          </ul>
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="glassmorphism-card p-4">
+    
+    <!-- Stylish Navigation Tabs -->
+    <ul class="nav nav-pills nav-justified mb-3">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'login' }" (click)="activeTab = 'login'">
+          <i class="bi bi-box-arrow-in-right"></i> Login
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'register' }" (click)="activeTab = 'register'">
+          <i class="bi bi-person-plus"></i> Register
+        </a>
+      </li>
+    </ul>
 
-          <div class="tab-content">
-            <!-- Login Form -->
-            <div *ngIf="activeTab === 'login'">
-              <h4 class="text-center">Login</h4>
-              <form #loginForm="ngForm" (ngSubmit)="onLogin()" novalidate>
-                <div class="mb-3">
-                  <label for="loginEmail" class="form-label">
-                    Email <span class="text-danger">*</span>
-                  </label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                    <input 
-                      type="email" id="loginEmail" class="form-control" 
-                      [(ngModel)]="loginData.email" name="email" 
-                      placeholder="Enter your email" required 
-                      #emailRef="ngModel" />
-                  </div>
-                  <small class="text-danger" *ngIf="emailRef.invalid && emailRef.touched">Email is required.</small>
-                </div>
-
-                <div class="mb-3">
-                  <label for="loginPassword" class="form-label">
-                    Password <span class="text-danger">*</span>
-                  </label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input 
-                      type="password" id="loginPassword" class="form-control" 
-                      [(ngModel)]="loginData.password" name="password" 
-                      placeholder="Enter your password" required 
-                      #passwordRef="ngModel" />
-                  </div>
-                  <small class="text-danger" *ngIf="passwordRef.invalid && passwordRef.touched">Password is required.</small>
-                </div>
-
-                <button class="btn btn-primary w-100" type="submit" [disabled]="loginForm.invalid">
-                  <i class="bi bi-box-arrow-in-right"></i> Login
-                </button>
-              </form>
+    <div class="tab-content">
+      <!-- Login Form -->
+      <div *ngIf="activeTab === 'login'">
+        <h4 class="text-center text-white">Login</h4>
+        <hr class="text-white">
+        <form #loginForm="ngForm" (ngSubmit)="onLogin()" novalidate>
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label text-white">Email <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" id="loginEmail" class="form-control" [(ngModel)]="loginData.email" name="email" 
+                placeholder="Enter your email" required #emailRef="ngModel" />
             </div>
-
-            <!-- Register Form -->
-            <div *ngIf="activeTab === 'register'">
-              <h4 class="text-center">Register</h4>
-              <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
-                <div class="mb-3">
-                  <label for="registerName" class="form-label">
-                    Name <span class="text-danger">*</span>
-                  </label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input 
-                      type="text" id="registerName" class="form-control" 
-                      [(ngModel)]="registerData.name" name="name" 
-                      placeholder="Enter your name" required 
-                      #nameRef="ngModel" />
-                  </div>
-                  <small class="text-danger" *ngIf="nameRef.invalid && nameRef.touched">Name is required.</small>
-                </div>
-
-                <div class="mb-3">
-                  <label for="registerEmail" class="form-label">
-                    Email <span class="text-danger">*</span>
-                  </label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                    <input 
-                      type="email" id="registerEmail" class="form-control" 
-                      [(ngModel)]="registerData.email" name="email" 
-                      placeholder="Enter your email" required 
-                      #registerEmailRef="ngModel" />
-                  </div>
-                  <small class="text-danger" *ngIf="registerEmailRef.invalid && registerEmailRef.touched">Valid email is required.</small>
-                </div>
-
-                <div class="mb-3">
-                  <label for="registerPassword" class="form-label">
-                    Password <span class="text-danger">*</span>
-                  </label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input 
-                      type="password" id="registerPassword" class="form-control" 
-                      [(ngModel)]="registerData.password" name="password" 
-                      placeholder="Enter your password" required 
-                      #registerPasswordRef="ngModel" />
-                  </div>
-                  <small class="text-danger" *ngIf="registerPasswordRef.invalid && registerPasswordRef.touched">Password is required.</small>
-                </div>
-
-                <div class="mb-3">
-                  <label for="registerRole" class="form-label">
-                    Role <span class="text-danger">*</span>
-                  </label>
-                  <select id="registerRole" class="form-select" [(ngModel)]="registerData.role" name="role" required>
-                    <option value="User" selected>User</option>
-                    <option value="Admin">Admin</option>
-                  </select>
-                </div>
-
-                <button class="btn btn-success w-100" type="submit" [disabled]="registerForm.invalid">
-                  <i class="bi bi-person-plus"></i> Register
-                </button>
-              </form>
-            </div>
+            <small class="text-danger" *ngIf="emailRef.invalid && emailRef.touched">Email is required.</small>
           </div>
-        </div>
+
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label text-white">Password <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-lock"></i></span>
+              <input type="password" id="loginPassword" class="form-control" [(ngModel)]="loginData.password" name="password" 
+                placeholder="Enter your password" required #passwordRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="passwordRef.invalid && passwordRef.touched">Password is required.</small>
+          </div>
+
+          <hr class="text-white">
+
+          <button class="btn btn-primary w-100" type="submit" [disabled]="loginForm.invalid">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div *ngIf="activeTab === 'register'">
+        <h4 class="text-center text-white">Register</h4>
+        <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
+          <div class="mb-3">
+            <label for="registerName" class="form-label text-white">Name <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-person"></i></span>
+              <input type="text" id="registerName" class="form-control" [(ngModel)]="registerData.name" name="name" 
+                placeholder="Enter your name" required #nameRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="nameRef.invalid && nameRef.touched">Name is required.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerEmail" class="form-label text-white">Email <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" id="registerEmail" class="form-control" [(ngModel)]="registerData.email" name="email" 
+                placeholder="Enter your email" required #registerEmailRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="registerEmailRef.invalid && registerEmailRef.touched">Valid email is required.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerPassword" class="form-label text-white">Password <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-lock"></i></span>
+              <input type="password" id="registerPassword" class="form-control" [(ngModel)]="registerData.password" name="password" 
+                placeholder="Enter your password" required #registerPasswordRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="registerPasswordRef.invalid && registerPasswordRef.touched">Password is required.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerRole" class="form-label text-white">Role <span class="text-danger">*</span></label>
+            <select id="registerRole" class="form-select" [(ngModel)]="registerData.role" name="role" required>
+              <option value="User" selected>User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+
+          <button class="btn btn-success w-100" type="submit" [disabled]="registerForm.invalid">
+            <i class="bi bi-person-plus"></i> Register
+          </button>
+        </form>
       </div>
     </div>
   </div>

@@ -26,19 +26,24 @@ export class LoginComponent {
       (response) => {
         console.log('Login Success:', response);
         localStorage.setItem('userRole', response.role); // Store user role
-        localStorage.setItem('loginTime', Date.now().toString()); // Store login time
+        //localStorage.setItem('loginTime', Date.now().toString()); // Store login time
         this.authService.login('fake-jwt-token');
         this.router.navigate(['/dashboard']); // ✅ Redirect to Dashboard
       },
       (error) => {
         console.error('Login Error:', error);
+        
+        // ✅ Handle License Expired Error
+      if (error?.error?.message === "License expired. Please renew your license.") {
+        alert("⚠️ License expired. Please renew your license to continue.");
+      } else {
         alert('Login failed! Check credentials.');
+      }
       }
     );
   }
 
   onRegister() {
-    debugger;
     console.log('Register Data:', this.registerData);
     this.loginService.register(this.registerData).subscribe(
       (response) => {

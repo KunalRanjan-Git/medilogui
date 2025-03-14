@@ -1,5 +1,18 @@
-footer {
-    position: relative;
-    width: 100%;
-  }
-  
+/* 🌟 Glassmorphism Footer */
+.glassmorphism-footer {
+  background: rgba(20, 20, 20, 0.8); /* Dark semi-transparent background */
+  backdrop-filter: blur(10px); /* Blur for glass effect */
+  border-radius:0 0 5px 5px; /* Rounded bottom corners */
+  padding: 12px 0;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2) !important; /* Shadow for depth */
+  text-align: center;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+
+/* ✅ Ensure Footer Stays at the Bottom */
+body {
+  min-height: 100vh;
+}
+
