@@ -4,22 +4,23 @@ import { LoginService } from '../../services/login.service';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-    imports: [FormsModule, NgIf,NgClass], // Import necessary Angular modules
-    templateUrl: './login.component.html',
+  imports: [FormsModule, NgIf, NgClass], // Import necessary Angular modules
+  templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-    providers: [LoginService] // Provide the service
+  providers: [LoginService] // Provide the service
 })
 export class LoginComponent {
   activeTab: string = 'login';
 
   loginData = { email: '', password: '' };
-  registerData = { name: '',role: '', email: '', password: '' ,};
+  registerData = { name: '', role: '', email: '', password: '', };
 
-  constructor(private authService: AuthService,private loginService: LoginService, private router: Router) {}
+  constructor(private authService: AuthService, private loginService: LoginService, private router: Router, private alertService: AlertService) { }
 
   onLogin() {
     this.loginService.login(this.loginData).subscribe(
@@ -32,13 +33,13 @@ export class LoginComponent {
       },
       (error) => {
         console.error('Login Error:', error);
-        
+
         // ✅ Handle License Expired Error
-      if (error?.error?.message === "License expired. Please renew your license.") {
-        alert("⚠️ License expired. Please renew your license to continue.");
-      } else {
-        alert('Login failed! Check credentials.');
-      }
+        if (error?.error?.message === "License expired. Please renew your license.") {
+          this.alertService.error('⚠️ License expired. Please renew your license to continue.');
+        } else {
+          this.alertService.error('Login failed! Check credentials.');
+        }
       }
     );
   }
@@ -48,12 +49,12 @@ export class LoginComponent {
     this.loginService.register(this.registerData).subscribe(
       (response) => {
         console.log('Registration Success:', response);
-        alert('Registration successful!');
+        this.alertService.success('Registration successful!'); // ✅ Show success message
         this.activeTab = 'login'; // ✅ Switch to login tab
       },
       (error) => {
         console.error('Registration Error:', error);
-        alert('Registration failed!');
+        this.alertService.error('Registration failed! Try again.');
       }
     );
   }

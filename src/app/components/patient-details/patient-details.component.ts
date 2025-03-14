@@ -4,6 +4,7 @@ import { PatientService } from '../../services/patient.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-patient-details',
@@ -33,7 +34,7 @@ export class PatientDetailsComponent implements OnInit {
     patientId: 0
   };
 
-  constructor(private route: ActivatedRoute, private patientService: PatientService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private patientService: PatientService, private router: Router,private alertService: AlertService) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -111,13 +112,15 @@ export class PatientDetailsComponent implements OnInit {
   savePatientDetails() {
     this.patientService.updatePatient(this.selectedPatient).subscribe(
       () => {
-        alert('Patient details updated successfully!');
+        this.alertService.success('Patient details updated successfully!');
+        //alert('Patient details updated successfully!');
         this.loadPatientDetails();
         this.closeEditPatientModal();
       },
       (error) => {
         console.error('Error updating patient:', error);
-        alert('Failed to update patient.');
+        this.alertService.error('Failed to update patient.');
+        //alert('Failed to update patient.');
       }
     );
   }
@@ -126,13 +129,15 @@ export class PatientDetailsComponent implements OnInit {
   saveMedicine() {
     this.patientService.addMedicine(this.newMedicine).subscribe(
       () => {
-        alert('Medicine added successfully!');
+        this.alertService.success('Medicine added successfully!');
+        //alert('Medicine added successfully!');
         this.closeMedicineModal();
         this.loadMedicineRecords();
       },
       (error) => {
         console.error('Error adding medicine:', error);
-        alert('Failed to add medicine.');
+        this.alertService.error('Failed to add medicine.');
+        //alert('Failed to add medicine.');
       }
     );
   }
@@ -141,13 +146,15 @@ export class PatientDetailsComponent implements OnInit {
   saveMedicineDetails() {
     this.patientService.updateMedicine(this.selectedMedicine).subscribe(
       () => {
-        alert('Medicine details updated successfully!');
+        this.alertService.success('Medicine details updated successfully!');
+        //alert('Medicine details updated successfully!');
         this.closeEditMedicineModal();
         this.loadMedicineRecords();
       },
       (error) => {
         console.error('Error updating medicine:', error);
-        alert('Failed to update medicine.');
+        this.alertService.error('Failed to update medicine.');
+        //alert('Failed to update medicine.');
       }
     );
   }
@@ -170,7 +177,8 @@ export class PatientDetailsComponent implements OnInit {
     this.patientService.deleteMedicine(this.selectedMedicineID).subscribe(() => {
       // ✅ Remove the deleted medicine from the table
       this.medicines = this.medicines.filter(m => m.id !== this.selectedMedicine.id);
-      alert('Medicine deleted successfully!');
+      this.alertService.success('Medicine deleted successfully!');
+      //alert('Medicine deleted successfully!');
       this.closeDeleteMedicineModal();
       this.loadMedicineRecords();
     }, error => {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
 import { Router } from '@angular/router';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +28,7 @@ export class DashboardComponent implements OnInit {
     gender: ''
   };
 
-  constructor(private patientService: PatientService, private router: Router) {}
+  constructor(private patientService: PatientService, private router: Router,private alertService: AlertService) { }
 
   ngOnInit() {
     this.loadPatients();
@@ -87,28 +88,44 @@ export class DashboardComponent implements OnInit {
   savePatient() {
     this.patientService.addPatient(this.newPatient).subscribe(
       () => {
-        alert('Patient added successfully!');
+        this.alertService.success('Patient added successfully!');
+        //alert('Patient added successfully!');
         this.closeModal();
         this.loadPatients(); // Refresh List
       },
       (error) => {
         console.error('Error adding patient:', error);
-        alert('Failed to add patient.');
+        this.alertService.error('Failed to add patient.');
+        //alert('Failed to add patient.');
       }
     );
   }
 
   // ✅ Delete Medicine
   deletePatient(patientId: number) {
-    if (confirm('Are you sure you want to delete this patient?')) {
-      this.patientService.deletePatient(patientId).subscribe(() => {
-        // ✅ Remove the deleted patient from the table
-        this.patients = this.patients.filter(m => m.id !== patientId);
-        alert('Patient deleted successfully!');
-        this.loadPatients();
-      }, error => {
-        console.error('Error deleting patient:', error);
-      });
-    }
+    this.alertService.confirm('Do you really want to delete this patient?').then((confirmed) => {
+      if (confirmed) {
+        this.patientService.deletePatient(patientId).subscribe(() => {
+          // ✅ Remove the deleted patient from the table
+          this.patients = this.patients.filter(m => m.id !== patientId);
+          this.alertService.success('Patient deleted successfully.');
+          //alert('Patient deleted successfully!');
+          this.loadPatients();
+        }, error => {
+          console.error('Error deleting patient:', error);
+        });
+      }
+    });
+
+    // if (confirm('Are you sure you want to delete this patient?')) {
+    //   this.patientService.deletePatient(patientId).subscribe(() => {
+    //     // ✅ Remove the deleted patient from the table
+    //     this.patients = this.patients.filter(m => m.id !== patientId);
+    //     alert('Patient deleted successfully!');
+    //     this.loadPatients();
+    //   }, error => {
+    //     console.error('Error deleting patient:', error);
+    //   });
+    // }
   }
 }
