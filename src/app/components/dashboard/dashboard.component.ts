@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   filteredPatients: any[] = [];
   searchText: string = '';
   showModal: boolean = false;
+  isDobUnknown: boolean = false;
 
   newPatient = {
     name: '',
@@ -68,8 +69,22 @@ export class DashboardComponent implements OnInit {
     this.newPatient = { name: '', dateOfBirth: '', age: '', contactNumber: '', address: '', gender: '' };
   }
 
+  setDefaultDob() {
+    if (this.isDobUnknown) {
+      this.newPatient.dateOfBirth = '1900-01-01'; // Default Date
+      this.newPatient.age = '0'; // Set age to 0
+    } else {
+      this.newPatient.dateOfBirth = ''; // Clear the field
+      this.newPatient.age = ''; // Reset age
+    }
+  }
+
   // ✅ Auto Calculate Age
   calculateAge() {
+    if (!this.newPatient.dateOfBirth || this.newPatient.dateOfBirth === '1900-01-01') {
+      this.newPatient.age = '0'; // Set age to 0 if DOB is default
+      return;
+    }
     if (this.newPatient.dateOfBirth) {
       const dob = new Date(this.newPatient.dateOfBirth);
       const today = new Date();
@@ -83,6 +98,29 @@ export class DashboardComponent implements OnInit {
       this.newPatient.age = age.toString();
     }
   }
+
+  exportPatientsAsPDF() {
+    // const doc = new jsPDF();
+    // doc.text('Patient List', 80, 10);
+  
+    // const tableColumn = ["#", "Name", "Gender", "Contact"];
+    // const tableRows: any[] = [];
+  
+    // this.patients.forEach((patient, index) => {
+    //   const patientData = [index + 1, patient.name, patient.gender, patient.contactNumber];
+    //   tableRows.push(patientData);
+    // });
+  
+    // // Auto-table (Requires jsPDF autoTable plugin)
+    // (doc as any).autoTable({
+    //   head: [tableColumn],
+    //   body: tableRows,
+    //   startY: 20,
+    // });
+  
+    // doc.save('Patient_List.pdf');
+  }
+  
 
   // ✅ Save New Patient to API
   savePatient() {

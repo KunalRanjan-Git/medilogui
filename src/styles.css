@@ -19,6 +19,13 @@ app-root {
 /* Main content should expand and push footer down */
 main {
   flex: 1;
+  /* background: linear-gradient(to bottom, #f8f9fa, #e9ecef); */
+  /*background-color: #f5f5dc; /* Light beige */
+  background-color: #e3f2fd; /* Soft blue */
+}
+
+.container{
+  max-width: 100% !important;
 }
 
 

@@ -65,3 +65,11 @@
     transform: scale(1.05);
   }
   
+
+  /* 👤 User Name Below Clinic Name */
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ffcc80; /* Light orange color */
+  margin-top: -3px;
+}

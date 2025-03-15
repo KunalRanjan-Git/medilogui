@@ -34,6 +34,9 @@ export class PatientDetailsComponent implements OnInit {
     patientId: 0
   };
 
+  displayDob: string = '';
+  displayAge: string = '';
+
   constructor(private route: ActivatedRoute, private patientService: PatientService, private router: Router,private alertService: AlertService) {}
 
   ngOnInit() {
@@ -84,6 +87,7 @@ export class PatientDetailsComponent implements OnInit {
   openEditPatientModal(patient: any) {
     this.showEditPatientModal = true;
     this.selectedPatient = { ...patient };
+    console.log(this.selectedPatient);
     this.selectedPatient.dateOfBirth = this.formatDateForInput(this.selectedPatient.dateOfBirth);
   }
 
@@ -188,8 +192,14 @@ export class PatientDetailsComponent implements OnInit {
 
   // ✅ Auto Calculate Age
   calculateAge() {
-    if (this.patient.dateOfBirth) {
-      const dob = new Date(this.patient.dateOfBirth);
+    debugger;
+    console.log(this.selectedPatient);
+    if (!this.selectedPatient.dateOfBirth || this.selectedPatient.dateOfBirth === '1900-01-01T00:00:00') {
+      this.selectedPatient.age = '0'; // Set age to 0 if DOB is default
+      return;
+    }
+    if (this.selectedPatient.dateOfBirth) {
+      const dob = new Date(this.selectedPatient.dateOfBirth);
       const today = new Date();
       let age = today.getFullYear() - dob.getFullYear();
       const monthDiff = today.getMonth() - dob.getMonth();
@@ -198,7 +208,7 @@ export class PatientDetailsComponent implements OnInit {
         age--;
       }
 
-      this.patient.age = age.toString();
+      this.selectedPatient.age = age.toString();
     }
   }
 

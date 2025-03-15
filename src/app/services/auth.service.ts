@@ -5,18 +5,19 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  //private maxSessionTime = 2 * 60 * 1000; // ⏳ 2 minutes in milliseconds (for testing)
   private maxSessionTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
   constructor(private router: Router) {}
 
-  login(token: string) {
+  login(token: string, role: string) {
     localStorage.setItem('authToken', token);
+    localStorage.setItem('userRole', role); // ✅ Store role in localStorage
     localStorage.setItem('loginTime', Date.now().toString()); // Store login time
   }
 
   logout() {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userRole');
     localStorage.removeItem('loginTime');
     this.router.navigate(['/login']);
   }
@@ -31,6 +32,10 @@ export class AuthService {
       }
     }
     return !!localStorage.getItem('authToken');
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem('userRole'); // ✅ Get role
   }
 
   checkSession() {

@@ -1,0 +1,171 @@
+<div class="container mt-4">
+
+  <!-- 🔵 Header with Stylish Buttons -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-center mb-3"><i class="bi bi-gear"></i> Admin Panel</h2>
+    <button class="btn btn-success add-btn" (click)="openAddUserModal()">
+      <i class="bi bi-plus"></i> Add User
+    </button>
+  </div>
+
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; let i = index">
+          <td><a (click)="openChangPasswordModal(user)">
+              <i class="bi bi-wrench-adjustable-circle"> </i> {{ i + 1 }}</a>
+          </td>
+          <td><input type="text" [(ngModel)]="user.name" class="form-control form-control-sm" /></td>
+          <td><input type="email" [(ngModel)]="user.email" class="form-control form-control-sm" /></td>
+          <td>
+            <select [(ngModel)]="user.role" class="form-select form-select-sm">
+              <option value="Admin">Admin</option>
+              <option value="User">User</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm me-1" (click)="updateUser(user)">
+              <i class="bi bi-check-lg"></i> Update
+            </button>
+            <button class="btn btn-danger btn-sm me-1" (click)="deleteUser(user.id)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+            <button class="btn btn-primary btn-sm" (click)="openLicenseModal(user.id)">
+              <i class="bi bi-key-fill"></i> Generate
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- License Modal (Uses Angular *ngIf for visibility) -->
+  <div class="modal-overlay" *ngIf="isLicenseModalOpen">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h5 class="text-center">Generate License</h5>
+        <button class="btn-close" (click)="closeLicenseModal()"></button>
+      </div>
+      <form #licenceForm="ngForm" (ngSubmit)="generateLicense()" novalidate>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="licenseDays" class="form-label"><strong>Enter License Key</strong></label>
+                      
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-hash"></i></span>
+              <input type="text" id="licenceKey" name="licenceKey" [(ngModel)]="DummyKey" class="form-control" (change)="checkKey()"
+              placeholder="Enter Key" required #keyRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="keyRef.invalid && keyRef.touched">Key is required.</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="licenseDays" class="form-label"><strong>Enter License Code</strong></label>
+                      
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-hash"></i></span>
+              <input type="number" id="licenseDays" name="licenseDays" [(ngModel)]="licenseDays" class="form-control" min="1"
+                placeholder="Enter Code" required #daysRef="ngModel"/>
+            </div>
+            <small class="text-danger" *ngIf="daysRef.invalid && daysRef.touched">Code is required.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success w-100" type="submit" [disabled]="licenceForm.invalid">
+            <i class="bi bi-shield-lock"></i> Generate
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal-overlay" *ngIf="isChangePasswordModalOpen">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h5 class="text-center">Change Password - {{selectedUser.name}}</h5>
+        <button class="btn-close" (click)="closeChangePasswordModal()"></button>
+      </div>
+      <form #pwdForm="ngForm" (ngSubmit)="updateUser(selectedUser)" novalidate>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="passwordHash" class="form-label"><strong>Enter Password</strong></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-hash"></i></span>
+              <input type="text" id="passwordHash" name="passwordHash" [(ngModel)]="selectedUser.passwordHash" class="form-control"
+                placeholder="Enter New Password" required #passRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="passRef.invalid && passRef.touched">Password is required.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success w-100" type="submit" [disabled]="pwdForm.invalid">
+            <i class="bi bi-gear"></i> Change
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal-overlay" *ngIf="addUserModalOpen">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h5 class="text-center">Add New User</h5>
+        <button class="btn btn-close" (click)="closeAddUserModal()"></button>
+      </div>
+      <form #registerForm="ngForm" (ngSubmit)="addNewUser()" novalidate>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="registerName" class="form-label">Name <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-person"></i></span>
+              <input type="text" id="registerName" class="form-control" [(ngModel)]="newUser.name" name="name"
+                placeholder="Enter your name" required #nameRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="nameRef.invalid && nameRef.touched">Name is required.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerEmail" class="form-label">Email <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" id="registerEmail" class="form-control" [(ngModel)]="newUser.email" name="email"
+                placeholder="Enter your email" required #registerEmailRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="registerEmailRef.invalid && registerEmailRef.touched">Valid email is
+              required.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="registerPassword" class="form-label">Password <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-lock"></i></span>
+              <input type="password" id="registerPassword" class="form-control" [(ngModel)]="newUser.password"
+                name="password" placeholder="Enter your password" required #registerPasswordRef="ngModel" />
+            </div>
+            <small class="text-danger" *ngIf="registerPasswordRef.invalid && registerPasswordRef.touched">Password is
+              required.</small>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success w-100" type="submit" [disabled]="registerForm.invalid">
+            <i class="bi bi-person-plus"></i> Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

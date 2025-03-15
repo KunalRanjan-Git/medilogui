@@ -23,13 +23,26 @@ export class LoginComponent {
   constructor(private authService: AuthService, private loginService: LoginService, private router: Router, private alertService: AlertService) { }
 
   onLogin() {
+    debugger
     this.loginService.login(this.loginData).subscribe(
       (response) => {
-        console.log('Login Success:', response);
-        localStorage.setItem('userRole', response.role); // Store user role
-        //localStorage.setItem('loginTime', Date.now().toString()); // Store login time
-        this.authService.login('fake-jwt-token');
-        this.router.navigate(['/dashboard']); // ✅ Redirect to Dashboard
+        if (response && response.role) {
+          localStorage.setItem('userID', response.userID); // Store full user data
+          this.authService.login('fake-jwt-token', response.role); // ✅ Store token and role
+
+          // ✅ Redirect based on role
+          if (response.role === 'Admin') {
+            this.router.navigate(['/manage-users']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
+        }
+
+        // console.log('Login Success:', response);
+        // localStorage.setItem('userRole', response.role); // Store user role
+        // //localStorage.setItem('loginTime', Date.now().toString()); // Store login time
+        // this.authService.login('fake-jwt-token');
+        // this.router.navigate(['/dashboard']); // ✅ Redirect to Dashboard
       },
       (error) => {
         console.error('Login Error:', error);
@@ -38,14 +51,14 @@ export class LoginComponent {
         if (error?.error?.message === "License expired. Please renew your license.") {
           this.alertService.error('⚠️ License expired. Please renew your license to continue.');
         } else {
-          this.alertService.error('Login failed! Check credentials.');
+          // this.alertService.error('Login failed! Check credentials.');
+          this.alertService.error(error.error.message);
         }
       }
     );
   }
 
   onRegister() {
-    console.log('Register Data:', this.registerData);
     this.loginService.register(this.registerData).subscribe(
       (response) => {
         console.log('Registration Success:', response);

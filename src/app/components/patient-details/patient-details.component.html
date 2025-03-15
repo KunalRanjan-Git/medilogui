@@ -14,7 +14,7 @@
       <div class="glass-card">
         <p><strong><i class="bi bi-person-circle"></i> Name:</strong> {{ patient.name }}</p>
         <p><strong><i class="bi bi-gender-ambiguous"></i> Gender:</strong> {{ patient.gender }}</p>
-        <p><strong><i class="bi bi-calendar"></i> Age:</strong> {{ patient.age }}</p>
+        <p *ngIf="patient.age !== '0'"><strong><i class="bi bi-calendar"></i> Age:</strong> {{ patient.age  }}</p>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
       <div class="glass-card">
         <p><strong><i class="bi bi-journal"></i> Page No:</strong> {{ patient.contactNumber }}</p>
         <p><strong><i class="bi bi-geo-alt"></i> Address:</strong> {{ patient.address }}</p>
-        <p><strong><i class="bi bi-calendar-event"></i> DOB:</strong> {{ patient.dateOfBirth | date:'dd-MMM-yyyy' }}</p>
+        <p *ngIf="patient.dateOfBirth !== '1900-01-01T00:00:00'"><strong><i class="bi bi-calendar-event"></i> DOB:</strong> {{ patient.dateOfBirth | date:'dd-MM-yyyy' }}</p>
       </div>
     </div>
   </div>
@@ -176,7 +176,7 @@
           <!-- Date of Birth -->
           <div class="mb-3">
             <label class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedPatient.dateOfBirth" name="dateOfBirth" required
+            <input type="date" class="form-control" [(ngModel)]="selectedPatient.dateOfBirth" name="selectedDateOfBirth" required
               (change)="calculateAge()">
           </div>
 

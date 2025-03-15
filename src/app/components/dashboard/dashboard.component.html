@@ -1,21 +1,23 @@
 <div class="container mt-4">
-  <!-- 🔵 Header with Stylish Buttons -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="page-title">📋 Patient Records</h2>
-    <button class="btn btn-success add-btn" (click)="openModal()">
+<!-- 🔵 Header with Stylish Buttons -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="page-title">📋 Patient Records</h2>
+  
+  <div>
+    <button class="btn btn-success add-btn me-2" (click)="openModal()">
       <i class="bi bi-plus-lg"></i> Add Patient
     </button>
+    <button class="btn btn-secondary" (click)="exportPatientsAsPDF()">
+      <i class="bi bi-printer"></i> Print
+    </button>
   </div>
+</div>
+
 
   <!-- 🔍 Search Box -->
   <div class="search-container">
-    <input 
-      type="text" 
-      class="search-box" 
-      placeholder="Search Patients..." 
-      [(ngModel)]="searchText"
-      (keyup.enter)="filterPatients()"
-    />
+    <input type="text" class="search-box" placeholder="Search Patients..." [(ngModel)]="searchText"
+      (keyup.enter)="filterPatients()" />
     <i class="bi bi-search search-icon"></i>
   </div>
 
@@ -27,7 +29,7 @@
           <th>Name</th>
           <th>Page No</th>
           <th>Address</th>
-          <th class="text-end">Actions</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -35,7 +37,7 @@
           <td>{{ patient.name }}</td>
           <td>{{ patient.contactNumber }}</td>
           <td>{{ patient.address }}</td>
-          <td class="text-end">
+          <td class="text-center">
             <button class="btn btn-info btn-sm action-btn" (click)="viewPatientDetails(patient.id)">
               <i class="bi bi-eye"></i> View
             </button>
@@ -65,14 +67,32 @@
             <input type="text" class="form-control" [(ngModel)]="newPatient.name" name="name" required>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-            <input type="date" class="form-control" [(ngModel)]="newPatient.dateOfBirth" name="dateOfBirth" required (change)="calculateAge()">
-          </div>
+          <!-- Date of Birth with Checkbox -->
+<div class="mb-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <label class="form-label mb-0">Date of Birth</label>
+
+    <!-- Checkbox moved to same line as label (right-aligned) -->
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="dobUnknown" [(ngModel)]="isDobUnknown"
+        name="dobUnknown" (change)="setDefaultDob()">
+      <label class="form-check-label text-danger" for="dobUnknown">NA</label>
+    </div>
+  </div>
+
+  <!-- Date Input -->
+  <input type="date" class="form-control mt-2" [(ngModel)]="newPatient.dateOfBirth" name="dateOfBirth"
+    [disabled]="isDobUnknown" (change)="calculateAge()">
+</div>
+
+
+
+          
 
           <div class="mb-3">
             <label class="form-label">Page Number <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" [(ngModel)]="newPatient.contactNumber" name="contactNumber" required>
+            <input type="text" class="form-control" [(ngModel)]="newPatient.contactNumber" name="contactNumber"
+              required>
           </div>
 
           <div class="mb-3">

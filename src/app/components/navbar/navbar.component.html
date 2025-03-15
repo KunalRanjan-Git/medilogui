@@ -2,14 +2,19 @@
   <div class="container d-flex justify-content-between align-items-center">
     
     <!-- ✅ Left: Brand Logo -->
-    <a class="navbar-brand brand-logo">
+    <a class="navbar-brand brand-logo" routerLink="/">
       <i class="bi bi-heart-pulse text-danger"></i> MediLoX
     </a>
 
-    <!-- ✅ Middle: Clinic Name with Link -->
-    <a class="navbar-brand clinic-name" routerLink="/dashboard">
-      Kalyan Homoeo Clinic
-    </a>
+    <!-- ✅ Middle: Clinic Name with User Name Below -->
+    <div class="text-center">
+      <a class="navbar-brand clinic-name" routerLink="/dashboard">
+        Kalyan Homoeo Clinic
+      </a>
+      <div *ngIf="loginUser[0]?.name" class="user-name">
+        <i class="bi bi-person-circle"></i> {{ loginUser[0].name }}
+      </div>
+    </div>
 
     <!-- ✅ Right: Live Clock & Logout -->
     <div class="d-flex align-items-center">
