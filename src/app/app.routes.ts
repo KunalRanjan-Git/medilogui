@@ -4,12 +4,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component'; // ✅ Import Manage Users
+import { PrescriptionComponent } from './components/prescription/prescription.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent }, // ✅ Always accessible
 
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'patient/:id', component: PatientDetailsComponent, canActivate: [AuthGuard] },
+  
+  {path: 'prescription/:id',component: PrescriptionComponent}, // ✅ Restricted to logged-in users
 
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] }, // ✅ Restricted to Admin
 

@@ -33,9 +33,7 @@ export class PatientDetailsComponent implements OnInit {
     prescribedDate: '',
     patientId: 0
   };
-
-  displayDob: string = '';
-  displayAge: string = '';
+  isDobUnknown: boolean = false;
 
   constructor(private route: ActivatedRoute, private patientService: PatientService, private router: Router,private alertService: AlertService) {}
 
@@ -58,6 +56,7 @@ export class PatientDetailsComponent implements OnInit {
   loadMedicineRecords() {
     this.patientService.getMedicineRecords(this.patientId).subscribe((data) => {
       this.medicines = data;
+      this.medicines = this.medicines.sort((a, b) => new Date(b.prescribedDate).getTime() - new Date(a.prescribedDate).getTime());
     });
   }
 
@@ -87,14 +86,16 @@ export class PatientDetailsComponent implements OnInit {
   openEditPatientModal(patient: any) {
     this.showEditPatientModal = true;
     this.selectedPatient = { ...patient };
-    console.log(this.selectedPatient);
     this.selectedPatient.dateOfBirth = this.formatDateForInput(this.selectedPatient.dateOfBirth);
   }
 
   formatDateForInput(date: string): string {
     if (!date) return '';
     const parsedDate = new Date(date);
-    return parsedDate.toISOString().split('T')[0]; // ✅ Converts to YYYY-MM-DD
+    // ✅ Extract only the date part from "YYYY-MM-DDT00:00:00"
+    const [year, month, day] = date.split('T')[0].split('-');
+
+    return `${year}-${month}-${day}`; // ✅ Ensures correct YYYY-MM-DD format
   }
 
   closeEditPatientModal() {
@@ -114,12 +115,24 @@ export class PatientDetailsComponent implements OnInit {
 
   // ✅ Save Patient Details
   savePatientDetails() {
+    debugger
+    if(this.selectedPatient.dateOfBirth == '' || this.selectedPatient)
+    {
+    this.selectedPatient.dateOfBirth = this.selectedPatient.dateOfBirth ? this.selectedPatient.dateOfBirth : null;
+    }
+    if(this.selectedPatient.dateOfBirth == null && this.isDobUnknown == false)
+    {
+      this.alertService.error('Please Select Date of Birth or Select NA');
+      return;
+    }
+
     this.patientService.updatePatient(this.selectedPatient).subscribe(
       () => {
         this.alertService.success('Patient details updated successfully!');
         //alert('Patient details updated successfully!');
         this.loadPatientDetails();
         this.closeEditPatientModal();
+        this.isDobUnknown = false;
       },
       (error) => {
         console.error('Error updating patient:', error);
@@ -189,13 +202,21 @@ export class PatientDetailsComponent implements OnInit {
       console.error('Error deleting medicine:', error);
     });
   }
+  setDefaultDob() {
+    if (this.isDobUnknown) {
+      this.selectedPatient.dateOfBirth = ''; // Default Date
+      this.selectedPatient.age = ''; // Set age to 0
+    } else {
+      this.selectedPatient.dateOfBirth = ''; // Clear the field
+      this.selectedPatient.age = ''; // Reset age
+    }
+  }
 
   // ✅ Auto Calculate Age
   calculateAge() {
-    debugger;
     console.log(this.selectedPatient);
-    if (!this.selectedPatient.dateOfBirth || this.selectedPatient.dateOfBirth === '1900-01-01T00:00:00') {
-      this.selectedPatient.age = '0'; // Set age to 0 if DOB is default
+    if (!this.selectedPatient.dateOfBirth || this.selectedPatient.dateOfBirth === '') {
+      this.selectedPatient.age = ''; // Set age to '' if DOB is default
       return;
     }
     if (this.selectedPatient.dateOfBirth) {
@@ -219,6 +240,9 @@ closeAllModals() {
   this.showEditMedicineModal = false;
 }
   
+navigateToPrescription(patientId: number) {
+  this.router.navigate(['/prescription', patientId]);
+}
 
   goToDashboard() {
     this.router.navigate(['/dashboard']);

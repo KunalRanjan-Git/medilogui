@@ -28,6 +28,19 @@ main {
   max-width: 100% !important;
 }
 
+@media print {
+  #prescription-content {
+    background-color: white !important;
+    color: black !important;
+  }
+  #prescription-content .header,
+  #prescription-content .footer {
+    background-color: #007bff !important;
+    color: white !important;
+  }
+}
+
+
 
 
   

@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +20,8 @@ export class NavbarComponent implements OnInit {
     email: '',
     role: 'User',
     passwordHash: ''
-  };;
+  };
+  ClinicName = environment.ClinicName;
 
   constructor(public authService: AuthService, private router: Router,private userService: UserService) {}
 
@@ -43,7 +45,9 @@ export class NavbarComponent implements OnInit {
       (data) => { 
         this.loginUser = data;
         this.loginUser = data.filter(user => user.id == this.loggedInUserId);
-        console.log(this.loginUser);
+        if (this.loginUser.length > 0) {
+          this.loginUser = this.loginUser[0];
+        }
       },
       (error) => {
         console.error('Error fetching users:', error);

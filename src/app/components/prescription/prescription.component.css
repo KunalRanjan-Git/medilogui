@@ -1,0 +1,46 @@
+.prescription-container {
+    max-width: 900px;
+    margin: auto;
+    margin-top: 20px;
+  }
+  
+  .prescription-card {
+    padding: 0px;
+    background: #fff;
+    background-color: #fff;
+    border-radius: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  }
+  
+  .prescription-area {
+    border: 2px dashed #ccc;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .no-border input,
+.no-border textarea {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+}
+
+
+.doctor-details p, .clinic-details p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+/* ✅ Header Styling */
+.header-section {
+  padding: 10px 0px 0px 0px;
+  border-radius: 10px 10px 0 0;
+}
+
+.header-row{
+  max-height: 210px;
+}
+
+  
+  

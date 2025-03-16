@@ -1,10 +1,16 @@
-<div class="container mt-4">
+<div class="container mt-3">
   <!-- Patient Details Header -->
-  <div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="text-primary mb-0"><i class="bi bi-person-circle"></i> Patient Details - {{ patient.name }}</h3>
+    <div>
     <button class="btn btn-primary rounded-btn" (click)="openEditPatientModal(patient)">
-      <i class="bi bi-pencil-square"></i> Edit Patient
+      <i class="bi bi-pencil-square"></i> Edit
     </button>
+    &nbsp;
+    <button class="btn btn-primary rounded-btn" (click)="navigateToPrescription(patient.id)">
+      <i class="bi bi-prescription"></i> Prescription
+    </button>
+  </div>
   </div>
   <hr>
 
@@ -14,7 +20,7 @@
       <div class="glass-card">
         <p><strong><i class="bi bi-person-circle"></i> Name:</strong> {{ patient.name }}</p>
         <p><strong><i class="bi bi-gender-ambiguous"></i> Gender:</strong> {{ patient.gender }}</p>
-        <p *ngIf="patient.age !== '0'"><strong><i class="bi bi-calendar"></i> Age:</strong> {{ patient.age  }}</p>
+        <p *ngIf="patient.age !== ''"><strong><i class="bi bi-calendar"></i> Age:</strong> {{ patient.age  }}</p>
       </div>
     </div>
 
@@ -22,7 +28,7 @@
       <div class="glass-card">
         <p><strong><i class="bi bi-journal"></i> Page No:</strong> {{ patient.contactNumber }}</p>
         <p><strong><i class="bi bi-geo-alt"></i> Address:</strong> {{ patient.address }}</p>
-        <p *ngIf="patient.dateOfBirth !== '1900-01-01T00:00:00'"><strong><i class="bi bi-calendar-event"></i> DOB:</strong> {{ patient.dateOfBirth | date:'dd-MM-yyyy' }}</p>
+        <p *ngIf="patient.dateOfBirth !== null"><strong><i class="bi bi-calendar-event"></i> DOB:</strong> {{ patient.dateOfBirth | date:'dd-MM-yyyy' }}</p>
       </div>
     </div>
   </div>
@@ -34,10 +40,10 @@
       <i class="bi bi-plus-lg"></i> Add Medicine
     </button>
   </div>
-  <hr>
+  <hr style="margin: 10px;">
 
   <!-- Medicines Table -->
-  <div class="table-responsive glass-table">
+  <div class="table-responsive glass-table tb-scroll">
     <table class="table table-hover">
       <thead class="table-dark">
         <tr>
@@ -175,9 +181,24 @@
           </div>
           <!-- Date of Birth -->
           <div class="mb-3">
-            <label class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedPatient.dateOfBirth" name="selectedDateOfBirth" required
-              (change)="calculateAge()">
+            <div class="d-flex justify-content-between align-items-center">
+              <label class="form-label mb-0">Date of Birth</label>
+
+              <!-- Checkbox moved to same line as label (right-aligned) -->
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="dobUnknown" [(ngModel)]="isDobUnknown"
+                  name="dobUnknown">
+                   <!-- (change)="setDefaultDob()"> -->
+                <label class="form-check-label text-danger" for="dobUnknown">NA</label>
+              </div>
+            </div>
+
+            <!-- Date Input -->
+            <input type="date" class="form-control mt-2" [(ngModel)]="selectedPatient.dateOfBirth" name="selectedDateOfBirth"
+              [disabled]="isDobUnknown" (change)="calculateAge()">
+
+            <!-- <input type="date" class="form-control" [(ngModel)]="selectedPatient.dateOfBirth" name="selectedDateOfBirth" required
+              (change)="calculateAge()"> -->
           </div>
 
           <div class="mb-3">

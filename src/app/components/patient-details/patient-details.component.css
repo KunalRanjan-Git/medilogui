@@ -102,6 +102,11 @@
   .modal-footer button:hover {
     transform: scale(1.05);
   }
+
+  .tb-scroll {
+    max-height: 168px;
+    overflow-y: auto;
+  }
   
   /* ✅ Fully Responsive */
   @media (max-width: 768px) {

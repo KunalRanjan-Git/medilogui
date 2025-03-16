@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
 import { Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,24 +25,36 @@ export class DashboardComponent implements OnInit {
 
   newPatient = {
     name: '',
-    dateOfBirth: '',
+    dateOfBirth: '' as string | null,
     age: '',
     contactNumber: '',
     address: '',
     gender: ''
   };
+  userRolePro:boolean = false;
 
-  constructor(private patientService: PatientService, private router: Router,private alertService: AlertService) { }
+  constructor(private authService: AuthService,private patientService: PatientService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.loadPatients();
+    const userRole = this.authService.getUserRole();
+    if (userRole == 'Pro') {
+      this.userRolePro = true;
+    } else {
+      this.userRolePro = false;
+    }
+    console.log('User Role:', userRole);
+    console.log('User Role Pro:', this.userRolePro);
   }
+
+  
 
   // ✅ Load Patients from API
   loadPatients() {
     this.patientService.getPatients().subscribe(
       (data) => {
         this.patients = data;
+        this.patients = this.patients.sort((a, b) => a.name.localeCompare(b.name));
         this.filteredPatients = data;
       },
       (error) => console.error('Error fetching patients:', error)
@@ -71,8 +86,8 @@ export class DashboardComponent implements OnInit {
 
   setDefaultDob() {
     if (this.isDobUnknown) {
-      this.newPatient.dateOfBirth = '1900-01-01'; // Default Date
-      this.newPatient.age = '0'; // Set age to 0
+      this.newPatient.dateOfBirth = ''; // Default Date
+      this.newPatient.age = ''; // Set age to 0
     } else {
       this.newPatient.dateOfBirth = ''; // Clear the field
       this.newPatient.age = ''; // Reset age
@@ -81,8 +96,8 @@ export class DashboardComponent implements OnInit {
 
   // ✅ Auto Calculate Age
   calculateAge() {
-    if (!this.newPatient.dateOfBirth || this.newPatient.dateOfBirth === '1900-01-01') {
-      this.newPatient.age = '0'; // Set age to 0 if DOB is default
+    if (!this.newPatient.dateOfBirth || this.newPatient.dateOfBirth === '') {
+      this.newPatient.age = ''; // Set age to 0 if DOB is default
       return;
     }
     if (this.newPatient.dateOfBirth) {
@@ -99,37 +114,92 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  exportPatientsAsPDF() {
-    // const doc = new jsPDF();
-    // doc.text('Patient List', 80, 10);
-  
-    // const tableColumn = ["#", "Name", "Gender", "Contact"];
-    // const tableRows: any[] = [];
-  
-    // this.patients.forEach((patient, index) => {
-    //   const patientData = [index + 1, patient.name, patient.gender, patient.contactNumber];
-    //   tableRows.push(patientData);
-    // });
-  
-    // // Auto-table (Requires jsPDF autoTable plugin)
-    // (doc as any).autoTable({
-    //   head: [tableColumn],
-    //   body: tableRows,
-    //   startY: 20,
-    // });
-  
-    // doc.save('Patient_List.pdf');
+  printPatients() {
+    console.log(this.patients);
+    const printWindow = window.open('', '', 'width=800,height=900');
+    printWindow!.document.write(`
+      <html>
+      <head>
+        <title>Kalyan Homeo Clinic - Patient List</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid black; padding: 10px; text-align: left; }
+          th { background-color: #f2f2f2; }
+        </style>
+      </head>
+      <body>
+        <h2>Kalyan Homeo Clinic - Patient List</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Page No</th>
+              <th>Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${this.patients.map((patient, index) => `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${patient.name}</td>
+                <td>${patient.contactNumber}</td>
+                <td>${patient.address}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `);
+    printWindow!.document.close();
+    printWindow!.print();
   }
-  
+
+
+  exportPatientsAsPDF() {
+    const doc = new jsPDF();
+    doc.text('Kalyan Homeo Clinic - Patient List', 60, 10);
+
+    const tableColumn = ["#", "Name", "Page No", "Address"];
+    const tableRows: any[] = [];
+
+    this.patients.forEach((patient, index) => {
+      const patientData = [index + 1, patient.name, patient.contactNumber, patient.address];
+      tableRows.push(patientData);
+    });
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20, // Adjust starting Y position
+      theme: 'grid', // Optional: "striped", "grid", or "plain"
+    });
+
+    const currentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    doc.save(`Patient_List_${currentDate}.pdf`);
+  }
+
+
 
   // ✅ Save New Patient to API
   savePatient() {
+    if (this.newPatient.dateOfBirth == '' || this.newPatient) {
+      this.newPatient.dateOfBirth = this.newPatient.dateOfBirth ? this.newPatient.dateOfBirth : null;
+    }
+    if (this.newPatient.dateOfBirth == null && this.isDobUnknown == false) {
+      this.alertService.error('Please Select Date of Birth or Select NA');
+      return;
+    }
     this.patientService.addPatient(this.newPatient).subscribe(
       () => {
         this.alertService.success('Patient added successfully!');
         //alert('Patient added successfully!');
         this.closeModal();
         this.loadPatients(); // Refresh List
+        this.isDobUnknown = false;
       },
       (error) => {
         console.error('Error adding patient:', error);

@@ -1,6 +1,8 @@
 export const environment = {
     production: true,
     apiUrl: 'http://localhost:5000/api', // Production API URL
-    version:'1.0.1',
+    ClinicName: 'Kalyan Homeo Clinic',
+    ClinicAddress: 'Main Road, Kalyanchak, Sahebganj, Jharkhand',
+    version:'1.0.2',
   };
   

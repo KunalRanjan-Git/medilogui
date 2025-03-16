@@ -37,7 +37,6 @@
     transition: all 0.3s ease-in-out;
   }
   .clinic-name:hover {
-    text-decoration: underline;
     color: #ffb74d;
   }
   

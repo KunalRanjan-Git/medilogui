@@ -6,21 +6,21 @@
       <i class="bi bi-heart-pulse text-danger"></i> MediLoX
     </a>
 
-    <!-- ✅ Middle: Clinic Name with User Name Below -->
-    <div class="text-center">
-      <a class="navbar-brand clinic-name" routerLink="/dashboard">
-        Kalyan Homoeo Clinic
+    <!-- ✅ Middle: Clinic Name, User Name, and Clock (Always Below Clinic Name) -->
+    <div class="text-center clinic-info">
+      <a class="navbar-brand clinic-name">
+        {{ClinicName}}
       </a>
-      <div *ngIf="loginUser[0]?.name" class="user-name">
-        <i class="bi bi-person-circle"></i> {{ loginUser[0].name }}
+      <div *ngIf="authService.isLoggedIn() && loginUser" class="user-name">
+        <i class="bi bi-person-circle"></i> {{ loginUser.name }}
+      </div>
+      <div class="live-clock">
+        <i class="bi bi-clock"></i> {{ currentTime }}
       </div>
     </div>
 
-    <!-- ✅ Right: Live Clock & Logout -->
+    <!-- ✅ Right: Logout Button -->
     <div class="d-flex align-items-center">
-      <span class="live-clock">
-        <i class="bi bi-clock"></i> {{ currentTime }}
-      </span>
       <button *ngIf="authService.isLoggedIn()" class="logout-btn" (click)="logout()">
         <i class="bi bi-box-arrow-right"></i> Logout
       </button>
