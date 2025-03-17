@@ -38,13 +38,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loadPatients();
     const userRole = this.authService.getUserRole();
-    if (userRole == 'Pro') {
-      this.userRolePro = true;
-    } else {
-      this.userRolePro = false;
-    }
-    console.log('User Role:', userRole);
-    console.log('User Role Pro:', this.userRolePro);
+    this.userRolePro = userRole ==='Pro';
   }
 
   
@@ -115,7 +109,6 @@ export class DashboardComponent implements OnInit {
   }
 
   printPatients() {
-    console.log(this.patients);
     const printWindow = window.open('', '', 'width=800,height=900');
     printWindow!.document.write(`
       <html>

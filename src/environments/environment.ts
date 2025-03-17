@@ -1,8 +1,8 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:5000/api', // Development API URL
-    ClinicName: 'Kalyan Homeo Clinic',
+    apiUrl: 'https://localhost:5001/api', // Development API URL
+    ClinicName: 'KALYAN HOMEO CLINIC',
     ClinicAddress: 'Main Road , Kalyanchak , Sahebganj , Jharkhand',
-    version:'1.0.2',
+    version:'1.1.0',
   };
   

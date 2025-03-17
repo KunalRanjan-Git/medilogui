@@ -56,7 +56,9 @@ export class PatientDetailsComponent implements OnInit {
   loadMedicineRecords() {
     this.patientService.getMedicineRecords(this.patientId).subscribe((data) => {
       this.medicines = data;
+      if(this.medicines){
       this.medicines = this.medicines.sort((a, b) => new Date(b.prescribedDate).getTime() - new Date(a.prescribedDate).getTime());
+      }
     });
   }
 
@@ -115,7 +117,6 @@ export class PatientDetailsComponent implements OnInit {
 
   // ✅ Save Patient Details
   savePatientDetails() {
-    debugger
     if(this.selectedPatient.dateOfBirth == '' || this.selectedPatient)
     {
     this.selectedPatient.dateOfBirth = this.selectedPatient.dateOfBirth ? this.selectedPatient.dateOfBirth : null;
@@ -214,7 +215,6 @@ export class PatientDetailsComponent implements OnInit {
 
   // ✅ Auto Calculate Age
   calculateAge() {
-    console.log(this.selectedPatient);
     if (!this.selectedPatient.dateOfBirth || this.selectedPatient.dateOfBirth === '') {
       this.selectedPatient.age = ''; // Set age to '' if DOB is default
       return;

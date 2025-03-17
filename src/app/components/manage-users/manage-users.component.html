@@ -42,7 +42,7 @@
             <button class="btn btn-danger btn-sm me-1" (click)="deleteUser(user.id)">
               <i class="bi bi-trash"></i> Delete
             </button>
-            <button class="btn btn-primary btn-sm" (click)="openLicenseModal(user.id)">
+            <button class="btn btn-primary btn-sm" (click)="openLicenseModal(user)">
               <i class="bi bi-key-fill"></i> Generate
             </button>
           </td>
@@ -66,9 +66,13 @@
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-hash"></i></span>
               <input type="text" id="licenceKey" name="licenceKey" [(ngModel)]="DummyKey" class="form-control" (change)="checkKey()"
-              placeholder="Enter Key" required #keyRef="ngModel" />
+              placeholder="XXXX-XXXX-XXXX-XXXX" required #keyRef="ngModel" />
             </div>
             <small class="text-danger" *ngIf="keyRef.invalid && keyRef.touched">Key is required.</small>
+            <small class="text-danger" *ngIf="DummyKey && DummyKey !== generateLicenseKey(selectedUserData.name)">
+              ❌ Invalid Key!
+            </small>
+            
           </div>
           
           <div class="mb-3">
@@ -76,10 +80,11 @@
                       
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-hash"></i></span>
-              <input type="number" id="licenseDays" name="licenseDays" [(ngModel)]="licenseDays" class="form-control" min="1"
-                placeholder="Enter Code" required #daysRef="ngModel"/>
+              <input type="text" id="licenseDays" name="licenseDays" [(ngModel)]="LicenseCode" class="form-control" 
+                placeholder="XX-XX-XX" required #daysRef="ngModel" pattern="^.+-.+-.+$" (change)="validateLicenseCode()"/>
+                
             </div>
-            <small class="text-danger" *ngIf="daysRef.invalid && daysRef.touched">Code is required.</small>
+            <small class="text-danger" *ngIf="daysRef.invalid && daysRef.touched">Code is Incorrect.</small>
           </div>
         </div>
         <div class="modal-footer">

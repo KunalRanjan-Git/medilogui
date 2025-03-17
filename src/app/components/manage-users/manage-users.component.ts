@@ -13,10 +13,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class ManageUsersComponent implements OnInit {
   users: any[] = [];
-  licenseDays: number = 30; // Default license days
+  licenseDays: number | null = null; // Default license days
+  LicenseCode:any = '';
   DummyKey: any = '';
   KeyValidation = false;
-  selectedUserId: number | null = null;
+  selectedUserData: any ;
   selectedUser: any = {
     name: '',
     email: '',
@@ -108,9 +109,9 @@ export class ManageUsersComponent implements OnInit {
     });
   }
 
-  openLicenseModal(userId: number) {
-    this.selectedUserId = userId;
-    this.licenseDays = 30; // Reset to default value
+  openLicenseModal(user: any) {
+    this.selectedUserData = user;
+    this.licenseDays = null; // Reset to default value
     this.isLicenseModalOpen = true;
   }
 
@@ -125,6 +126,8 @@ export class ManageUsersComponent implements OnInit {
   }
 
   closeLicenseModal() {
+    this.DummyKey = '';
+    this.LicenseCode ='';
     this.isLicenseModalOpen = false;
   }
 
@@ -137,17 +140,21 @@ export class ManageUsersComponent implements OnInit {
   }
 
   checkKey(){
-    if(this.DummyKey == '123456'){ 
-      this.KeyValidation = true;
-    }
-    else{
-      this.KeyValidation = false;
+    const expectedKey = this.generateLicenseKey(this.selectedUserData.name); // Assume this.selectedUserName is set
+    if (this.DummyKey.toUpperCase() === expectedKey) {
+    this.KeyValidation = true;
+    } else {
+    this.KeyValidation = false;
     }
   }
 
   generateLicense() {
-    if (this.selectedUserId !== null) {
-      this.userService.generateLicense(this.selectedUserId, this.licenseDays).subscribe(
+    if(this.KeyValidation == false){
+      this.alertService.error("Invalid License Key");
+      return;
+    }
+    if (this.selectedUserData !== null && this.licenseDays) {
+      this.userService.generateLicense(this.selectedUserData.id, this.licenseDays).subscribe(
         () => {
           this.alertService.success('License generated successfully!');
           this.closeLicenseModal();
@@ -160,4 +167,68 @@ export class ManageUsersComponent implements OnInit {
       );
     }
   }
+
+  generateLicenseKey(userName: string): string {
+    // ✅ Fix Date Issue - Get Local Date (YYYYMMDD)
+    const currentDate = new Date();
+    const formattedDate = currentDate.getFullYear().toString() +
+                          String(currentDate.getMonth() + 1).padStart(2, '0') +
+                          String(currentDate.getDate()).padStart(2, '0');
+  
+    // ✅ Extract First Name (Before Space)
+    let firstName = userName.split(' ')[0].toUpperCase();
+  
+    // ✅ Ensure First Name is at Least 8 Characters
+    const alphabet = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+    let index = 0;
+    while (firstName.length < 8) {
+      firstName += alphabet[index];
+      index++;
+    }
+  
+    // ✅ Arrange Output: Letter - Digit - Letter - Digit...
+    let rawKey = "";
+    for (let i = 0; i < firstName.length; i++) {
+      rawKey += firstName[i]; // Add letter
+      if (i < formattedDate.length) {
+        rawKey += formattedDate[i]; // Add corresponding digit
+      }
+    }
+  
+    // ✅ Insert "-" after every 4 characters
+    let formattedKey = rawKey.match(/.{1,4}/g)?.join("-") || rawKey;
+
+    // Example Usage
+    //const userName = "kunal ranjan";
+    //const date = 20250317
+    //const licenseKey = this.generateLicenseKey(userName);
+    //console.log(licenseKey); // Output: K2U0-N2A5-L0Z3-Y1X7
+    return formattedKey;
+  }
+
+  validateLicenseCode() {
+    const extractedValue = this.extractMiddleValue(this.LicenseCode); // licenseCode from input box
+    if (extractedValue) {
+      this.licenseDays = Number(extractedValue);
+    } else {
+      console.error("Invalid input format!");
+    }
+  }
+  
+
+  extractMiddleValue(inputValue: string): string | null {
+    // ✅ Ensure input contains exactly two '-'
+    const parts = inputValue.split('-');
+  
+    if (parts.length === 3) {
+      return parts[1]; // ✅ Extract the middle part
+    } else {
+      console.error("Invalid input format. Expected format: XX-YY-ZZ (any length)");
+      return null;
+    }
+  }
+  
+
+  
+  
 }

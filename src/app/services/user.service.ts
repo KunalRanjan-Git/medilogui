@@ -42,4 +42,9 @@ export class UserService {
   generateLicense(userId: number, daysValid: number): Observable<any> {
     return this.http.post(`${this.LoginBaseUrl}/generate/${userId}`, { daysValid });
   }
+
+  // ✅ Generate License
+  renewLicense(userId: number,licenceType: string, daysValid: number): Observable<any> {
+    return this.http.post(`${this.LoginBaseUrl}/Renew/${userId}/${licenceType}`, { daysValid });
+  }
 }

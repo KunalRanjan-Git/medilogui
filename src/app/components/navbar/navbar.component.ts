@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -14,46 +13,22 @@ import { environment } from '../../../environments/environment';
 })
 export class NavbarComponent implements OnInit {
   currentTime: string = '';
-  loggedInUserId: number | null = null;
-  loginUser: any = {
-    name: '',
-    email: '',
-    role: 'User',
-    passwordHash: ''
-  };
   ClinicName = environment.ClinicName;
+  // proUser : boolean = false;
+  username: string | null = null; // ✅ Add username
 
-  constructor(public authService: AuthService, private router: Router,private userService: UserService) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.loadLoggedInUser();
-    this.loadUsers();
+    this.authService.username$.subscribe(name => {
+      this.username = name; // ✅ Update username in navbar
+    });
+    // const userRole = this.authService.getUserRole();
+    // this.proUser = userRole === 'Pro';
     this.updateTime(); // Initial update
     setInterval(() => this.updateTime(), 1000); // Update time every second
   }
 
-  loadLoggedInUser() {
-    const userIdString = localStorage.getItem('userID'); 
-    var userId = userIdString ? Number(userIdString) : null;
-    if (userId) {
-      this.loggedInUserId = userId;
-    }
-  }
-
-  loadUsers() {
-    this.userService.getAllUsers().subscribe(
-      (data) => { 
-        this.loginUser = data;
-        this.loginUser = data.filter(user => user.id == this.loggedInUserId);
-        if (this.loginUser.length > 0) {
-          this.loginUser = this.loginUser[0];
-        }
-      },
-      (error) => {
-        console.error('Error fetching users:', error);
-      }
-    );
-  }
 
   updateTime() {
     const now = new Date();
@@ -62,6 +37,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.username = null; // ✅ Clear username on logout
     this.router.navigate(['/login']);
   }
 }

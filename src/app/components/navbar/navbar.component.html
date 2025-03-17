@@ -11,8 +11,8 @@
       <a class="navbar-brand clinic-name">
         {{ClinicName}}
       </a>
-      <div *ngIf="authService.isLoggedIn() && loginUser" class="user-name">
-        <i class="bi bi-person-circle"></i> {{ loginUser.name }}
+      <div *ngIf="username" class="user-name">
+        <i class="bi bi-person-circle"></i> {{username}}
       </div>
       <div class="live-clock">
         <i class="bi bi-clock"></i> {{ currentTime }}

@@ -187,8 +187,7 @@
               <!-- Checkbox moved to same line as label (right-aligned) -->
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="dobUnknown" [(ngModel)]="isDobUnknown"
-                  name="dobUnknown">
-                   <!-- (change)="setDefaultDob()"> -->
+                  name="dobUnknown" (change)="setDefaultDob()">
                 <label class="form-check-label text-danger" for="dobUnknown">NA</label>
               </div>
             </div>

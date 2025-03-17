@@ -13,8 +13,13 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'MediLoX';
+  username: string | null = null; // ✅ Store username
 
   constructor(private authService: AuthService, private router: Router) {
+    this.authService.username$.subscribe(name => {
+      this.username = name; // ✅ Automatically update when login/logout happens
+    });
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.authService.checkSession();
