@@ -6,11 +6,12 @@ import { PatientService } from '../../services/patient.service';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-prescription',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './prescription.component.html',
   styleUrl: './prescription.component.css'
 })
@@ -22,10 +23,16 @@ export class PrescriptionComponent {
     year: 'numeric'
   }).replace(/\//g, '-');
   AgeSex: string = '';
+  
   ClinicName = environment.ClinicName;
-  ClinicAddress = environment.ClinicAddress;
 
   userRolePro: boolean = false;
+
+  // Prescription formats
+  prescriptionFormats = environment.prescriptionFormats;
+
+  selectedFormat = this.prescriptionFormats[0]; // Default format
+  showHindi: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -55,6 +62,15 @@ export class PrescriptionComponent {
     } else if (this.patient.gender!=''
       && this.patient.age != '') {
       this.AgeSex = '/';    
+    }
+  }
+
+  selectFormat(formatId: number) {
+    this.selectedFormat = this.prescriptionFormats.find(f => f.id === formatId) || this.selectedFormat;
+    if (this.selectedFormat.id === 2) {
+      this.showHindi = true;
+    } else {
+      this.showHindi = false;
     }
   }
 
