@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  //apiUrl: 'https://localhost:5001/api', // Development API URL - VS
+  //apiUrl: 'https://localhost:5001/api', // Development API URL - VS Dev
   apiUrl: 'http://localhost:5000/api', // Development API URL - IIS
   ClinicName: 'KALYAN HOMEO CLINIC',
   version: '1.1.0',
