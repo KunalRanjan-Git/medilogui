@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service';
+import { LabTestComponent } from "../lab-test/lab-test.component";
 
 @Component({
   selector: 'app-patient-details',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LabTestComponent],
   templateUrl: './patient-details.component.html',
   styleUrls: ['./patient-details.component.css']
 })

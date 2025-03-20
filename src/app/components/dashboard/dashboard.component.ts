@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit {
   }
 
   printPatients() {
+    if(this.patients){
     const printWindow = window.open('', '', 'width=800,height=900');
     printWindow!.document.write(`
       <html>
@@ -149,11 +150,15 @@ export class DashboardComponent implements OnInit {
     `);
     printWindow!.document.close();
     printWindow!.print();
+            }else{
+              this.alertService.error("No Patient Found")
+            }
   }
 
 
   exportPatientsAsPDF() {
-    const doc = new jsPDF();
+    if(this.patients){
+      const doc = new jsPDF();
     doc.text('Kalyan Homeo Clinic - Patient List', 60, 10);
 
     const tableColumn = ["#", "Name", "Page No", "Address"];
@@ -173,6 +178,10 @@ export class DashboardComponent implements OnInit {
 
     const currentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
     doc.save(`Patient_List_${currentDate}.pdf`);
+    }else{
+      this.alertService.error("No Patient Found")
+    }
+    
   }
 
 
